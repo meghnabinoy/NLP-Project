@@ -23,3 +23,21 @@ cleaned_text = re.sub(r"{pattern}", "", text)
 print(cleaned_text)"""
     return code
 
+
+
+
+
+
+
+
+
+
+
+if user_text.strip():
+    if clean_type == "Remove HTML Tags":
+        cleaned_text = re.sub(r"<.*?>", "", user_text)
+    elif clean_type == "Remove Punctuation":
+        cleaned_text = re.sub(r"[^\w\s]", "", user_text)
+    else:
+        cleaned_text = re.sub(r"<.*?>|[^\w\s]", "", user_text)
+    st.write("Cleaned Text Preview:", cleaned_text)
