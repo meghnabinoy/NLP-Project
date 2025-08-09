@@ -40,4 +40,4 @@ if user_text.strip():
         cleaned_text = re.sub(r"[^\w\s]", "", user_text)
     else:
         cleaned_text = re.sub(r"<.*?>|[^\w\s]", "", user_text)
-    st.write("Cleaned Text Preview:", cleaned_text)
+    st.write("Cleaned Text Preview:",cleaned_text)
