@@ -31,6 +31,12 @@ print(cleaned_text)"""
 
 
 
+if st.button("Generate Python Code"):
+    if user_text.strip():
+        output_code = generate_code(clean_type)
+        st.code(output_code, language="python")
+    else:
+        st.warning("Please enter some text.")
 
 
 if user_text.strip():
