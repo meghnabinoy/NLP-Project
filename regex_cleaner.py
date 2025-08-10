@@ -66,7 +66,6 @@ def generate_code(clean_types):
         "text = '''Your text here'''"
     ]
     
-    # Add NLTK import if stopwords removal is selected
     if "Remove Stopwords" in clean_types:
         code.insert(1, "import nltk")
         code.insert(2, "from nltk.corpus import stopwords")
