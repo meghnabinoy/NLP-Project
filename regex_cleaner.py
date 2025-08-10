@@ -3,7 +3,7 @@ import re
 import nltk
 import base64
 
- st.set_page_config(page_title="Regex Code Generator for Text Cleaning", layout="wide")
+st.set_page_config(page_title="Regex Code Generator for Text Cleaning", layout="wide")
 st.title("Regex Code Generator for Text Cleaning")
 st.write("Enter text, choose what to clean, and generate Python code for regex-based cleaning.")
 if "user_text" not in st.session_state:
