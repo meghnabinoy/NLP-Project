@@ -85,3 +85,35 @@ def generate_code(clean_types):
     
     code.append("print(text)")
     return "\n".join(code)
+
+
+if st.button("Generate Python Code"):
+    if st.session_state.user_text.strip():
+        output_code = generate_code(st.session_state.clean_types, custom_pattern if custom_pattern.strip() else None)
+        st.code(output_code, language="python")
+    else:
+        st.warning("Please enter some text.")
+
+if st.session_state.user_text.strip():
+    cleaned_text = clean_text(st.session_state.user_text, st.session_state.clean_types)
+
+    if custom_pattern.strip():
+        try:
+            cleaned_text = re.sub(custom_pattern, "", cleaned_text)
+        except re.error as e:
+            st.error(f"Invalid regex: {e}")
+
+    st.subheader("Comparison")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.text_area("Original Text", st.session_state.user_text, height=200)
+    with col2:
+        st.text_area("Cleaned Text", cleaned_text, height=200)
+
+
+    def download_button(data, filename, label):
+        b64 = base64.b64encode(data.encode()).decode()
+        href = f'<a href="data:file/txt;base64,{b64}" download="{filename}">{label}</a>'
+        return href
+
+    st.markdown(download_button(cleaned_text, "cleaned_text.txt", "Download Cleaned Text"), unsafe_allow_html=True)
