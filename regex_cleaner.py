@@ -49,6 +49,17 @@ except:
 def remove_stopwords(text):
     return ' '.join(word for word in text.split() if word.lower() not in stop_words)
 
+def clean_text(text, clean_types):
+    for ctype in clean_types:
+        if ctype == "Remove HTML Tags":
+            text = re.sub(r"<.*?>", "", text)
+        elif ctype == "Remove Punctuation":
+            text = re.sub(r"[^\w\s]", "", text)
+        elif ctype == "Remove Stopwords":
+            text = remove_stopwords(text)
+        elif ctype == "Lowercase":
+            text = text.lower()
+    return text
 
 def generate_code(clean_types):
     code = [
