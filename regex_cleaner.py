@@ -33,7 +33,6 @@ st.session_state.clean_types = clean_types
 st.session_state.previous_text = user_text
 st.session_state.previous_clean_types = clean_types
 
-
 @st.cache_resource
 def download_nltk_data():
     nltk.download('stopwords', quiet=True)
