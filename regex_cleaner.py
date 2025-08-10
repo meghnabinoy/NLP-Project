@@ -34,6 +34,22 @@ st.session_state.previous_text = user_text
 st.session_state.previous_clean_types = clean_types
 
 
+@st.cache_resource
+def download_nltk_data():
+    nltk.download('stopwords', quiet=True)
+    return set(stopwords.words('english'))
+
+try:
+    from nltk.corpus import stopwords
+    stop_words = download_nltk_data()
+except:
+    st.error("Error downloading NLTK data. Please check your internet connection.")
+    stop_words = set()
+
+def remove_stopwords(text):
+    return ' '.join(word for word in text.split() if word.lower() not in stop_words)
+
+
 def generate_code(clean_types):
     code = [
         "import re",
