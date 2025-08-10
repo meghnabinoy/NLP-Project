@@ -1,27 +1,7 @@
 import streamlit as st
 import re
-
-
-def generate_code(cleaning_type):
-    if cleaning_type == "Remove HTML Tags":
-        pattern = r"<.*?>"
-        code = f"""import re
-text = "YOUR_TEXT_HERE"
-cleaned_text = re.sub(r"{pattern}", "", text)
-print(cleaned_text)"""
-    elif cleaning_type == "Remove Punctuation":
-        pattern = r"[^\w\s]"
-        code = f"""import re
-text = "YOUR_TEXT_HERE"
-cleaned_text = re.sub(r"{pattern}", "", text)
-print(cleaned_text)"""
-    else: 
-        pattern = r"<.*?>|[^\w\s]"
-        code = f"""import re
-text = "YOUR_TEXT_HERE"
-cleaned_text = re.sub(r"{pattern}", "", text)
-print(cleaned_text)"""
-    return code
+import nltk
+import base64
 
 
 
@@ -31,19 +11,34 @@ print(cleaned_text)"""
 
 
 
-if st.button("Generate Python Code"):
-    if user_text.strip():
-        output_code = generate_code(clean_type)
-        st.code(output_code, language="python")
-    else:
-        st.warning("Please enter some text.")
 
 
-if user_text.strip():
-    if clean_type == "Remove HTML Tags":
-        cleaned_text = re.sub(r"<.*?>", "", user_text)
-    elif clean_type == "Remove Punctuation":
-        cleaned_text = re.sub(r"[^\w\s]", "", user_text)
-    else:
-        cleaned_text = re.sub(r"<.*?>|[^\w\s]", "", user_text)
-    st.write("Cleaned Text Preview:",cleaned_text)
+
+
+
+
+def generate_code(clean_types):
+    code = [
+        "import re",
+        "text = '''Your text here'''"
+    ]
+    
+    # Add NLTK import if stopwords removal is selected
+    if "Remove Stopwords" in clean_types:
+        code.insert(1, "import nltk")
+        code.insert(2, "from nltk.corpus import stopwords")
+        code.insert(3, "nltk.download('stopwords')")
+        code.insert(4, "stop_words = set(stopwords.words('english'))")
+    
+    for ctype in clean_types:
+        if ctype == "Remove HTML Tags":
+            code.append("text = re.sub(r'<.*?>', '', text)")
+        elif ctype == "Remove Punctuation":
+            code.append("text = re.sub(r'[^\\w\\s]', '', text)")
+        elif ctype == "Remove Stopwords":
+            code.append("text = ' '.join(word for word in text.split() if word.lower() not in stop_words)")
+        elif ctype == "Lowercase":
+            code.append("text = text.lower()")
+    
+    code.append("print(text)")
+    return "\n".join(code)
